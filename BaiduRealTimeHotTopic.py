@@ -67,7 +67,7 @@ def _crawl_article(article_url):
 
     finalbody = ''
     if bodystr:
-        finalbody = bodystr.replace(u'详情>>', '').replace('\n','').replace(' ','')
+        finalbody = bodystr.replace(u'详情>>', '').split('...')[0].replace('\n','').replace(' ','')
     elif body2str:
         bodyindex = 0
         split_body = body2str.split('\n')
@@ -82,7 +82,7 @@ def _crawl_article(article_url):
 if __name__ == '__main__':
 
     temp_outpath = './data/realtime_temp.tsv'
-    final_outpath = './data/baiduRealtime_' + str(time.strftime('%Y%m%d', time.localtime())) + ".tsv"
+    final_outpath = './data/baiduRealtime_' + str(time.strftime('%Y%m%d%H', time.localtime())) +'0000'+ ".tsv"
     title_css = ['.list-title', 'string']
     url_css = ['.list-title', 'href']
     hotindex_css = ['td[class~="last"] span', 'string']
@@ -94,10 +94,10 @@ if __name__ == '__main__':
     realtime_url = 'http://top.baidu.com/buzz?b=1&c=513&fr=topbuzz_b11_c513'
 
     Is_Crawled_Today = False
-    todaytimestamp = str(time.strftime('%Y%m%d%H%M', time.localtime()))
+    todaytimestamp = str(time.strftime('%Y%m%d%H', time.localtime()))
     if os.path.exists(final_outpath):
         file_modify_time = time.localtime(os.path.getmtime(final_outpath))
-        modify_time_str = str(time.strftime('%Y%m%d%H%M', file_modify_time))
+        modify_time_str = str(time.strftime('%Y%m%d%H', file_modify_time))
         file_size = os.path.getsize(final_outpath)
         if modify_time_str == todaytimestamp and file_size > 0:
             Is_Crawled_Today = True
@@ -131,6 +131,14 @@ if __name__ == '__main__':
 
         with open(final_outpath, mode='a', encoding='utf-8') as writer:
             writer.write('\n'.join(new_results_list))
+            writer.write('\n')
+
+        UploadTools = "..\\UploadCosmos\\Microsoft.Label.VCUploadTools.exe"
+        filedir, filename = os.path.split(final_outpath)
+        CosmosPath = "https://cosmos09.osdinfra.net/cosmos/searchSTC-A/shares/XiaoIce/ToB/SAI/Analytics/Prod/TopQuery/Baidu/Delta/"+str(time.strftime('%Y/%m', time.localtime()))+"/"+filename
+        comm = UploadTools +" "+"-o"+" "+final_outpath+" "+CosmosPath
+        os.system(comm)
+
         print('complete!')
     else:
         print('skip today!')

@@ -166,6 +166,17 @@ if __name__ == '__main__':
 
         with open(final_outpath, mode='w', encoding='utf-8') as writer:
             writer.write('\n'.join(new_results_list))
+
+        UploadTools = "..\\UploadCosmos\\Microsoft.Label.VCUploadTools.exe"
+        filedir, filename = os.path.split(final_outpath)
+        CosmosPath = "https://cosmos09.osdinfra.net/cosmos/searchSTC-A/shares/XiaoIce/ToB/SAI/Analytics/Prod/TopQuery/Baidu/Delta/"+str(time.strftime('%Y/%m', time.localtime()))+"/"+filename
+        comm = UploadTools +" "+"-o"+" "+final_outpath+" "+CosmosPath
+        CosmosFile = "https://cosmos09.osdinfra.net/cosmos/searchSTC-A/shares/XiaoIce/ToB/SAI/Analytics/Prod/TopQuery/Baidu/baiduBangDan.tsv"
+        commFile = UploadTools +" " + "-o" +" "+final_outpath+" "+CosmosFile
+        os.system(commFile)
+        os.system(comm)
+
+        # os.system(commFile)
         print('complete!')
     else:
         print('skip today!')

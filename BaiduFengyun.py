@@ -103,7 +103,7 @@ def _crawl_category(category_url):
 if __name__ == '__main__':
 
     temp_outpath = './data/fengyun_temp.tsv'
-    final_outpath = './data/baiduFengYun_' + str(time.strftime('%Y%m%d', time.localtime())) + '.tsv'
+    final_outpath = './data/baiduFengYun_' + str(time.strftime('%Y%m%d%H', time.localtime())) +'0000'+ '.tsv'
 
     # category1_css = ['.all-list .title', 'string']
     category2_name_css = ['.all-list .links a', 'string']
@@ -122,10 +122,10 @@ if __name__ == '__main__':
     hotindex_str = ''
 
     Is_Crawled_Today = False
-    todaytimestamp = str(time.strftime('%Y%m%d', time.localtime()))
+    todaytimestamp = str(time.strftime('%Y%m%d%H', time.localtime()))
     if os.path.exists(final_outpath):
         file_modify_time = time.localtime(os.path.getmtime(final_outpath))
-        modify_time_str = str(time.strftime('%Y%m%d', file_modify_time))
+        modify_time_str = str(time.strftime('%Y%m%d%H', file_modify_time))
         file_size = os.path.getsize(final_outpath)
         if modify_time_str == todaytimestamp and file_size > 0:
             Is_Crawled_Today = False
@@ -156,6 +156,13 @@ if __name__ == '__main__':
 
         with open(final_outpath, mode='w', encoding='utf-8') as writer:
             writer.write('\n'.join(new_results_list))
+            writer.write('\n')
+
+        UploadTools = "..\\UploadCosmos\\Microsoft.Label.VCUploadTools.exe"
+        filedir, filename = os.path.split(final_outpath)
+        CosmosPath = "https://cosmos09.osdinfra.net/cosmos/searchSTC-A/shares/XiaoIce/ToB/SAI/Analytics/Prod/TopQuery/Baidu/Delta/"+str(time.strftime('%Y/%m', time.localtime()))+"/"+filename
+        comm = UploadTools +" "+"-o"+" "+final_outpath+" "+CosmosPath
+        os.system(comm)
         print('complete!')
     else:
         print('skip today!')

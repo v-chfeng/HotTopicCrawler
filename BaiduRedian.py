@@ -5,6 +5,7 @@
 
 import os
 import time
+import subprocess
 import HotTopicCrawler
 
 
@@ -133,12 +134,22 @@ if __name__ == '__main__':
                 newline_list.append(split_title)
                 newline_list.append(bodystr)
                 newline_list.append(split_hotindex)
-                newline_list.append(urls)
+                newline_list.append(split_url+";"+urls)
                 newline_list.append(frequency)
                 new_results_list.append('\t'.join(newline_list))
 
             with open(final_outpath, mode='a', encoding='utf-8') as writer:
                 writer.write('\n'.join(new_results_list))
+                writer.write('\n')
+
+            UploadTools = "..\\UploadCosmos\\Microsoft.Label.VCUploadTools.exe"
+            filedir, filename = os.path.split(final_outpath)
+            CosmosPath = "https://cosmos09.osdinfra.net/cosmos/searchSTC-A/shares/XiaoIce/ToB/SAI/Analytics/Prod/TopQuery/Baidu/Delta/" + str(time.strftime('%Y/%m', time.localtime())) + "/" + filename
+            comm = UploadTools + " " + "-o" + " " + final_outpath + " " + CosmosPath
+            CosmosFile = "https://cosmos09.osdinfra.net/cosmos/searchSTC-A/shares/XiaoIce/ToB/SAI/Analytics/Prod/TopQuery/Baidu/baiduRedian.tsv"
+            commFile = UploadTools + " " + "-o" +" "+ final_outpath + " " + CosmosFile
+            os.system(comm )
+            os.system(commFile)
             print('complete!')
     else:
         print('skip today!')
