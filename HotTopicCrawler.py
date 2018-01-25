@@ -106,6 +106,8 @@ class crawler():
          eg. Body = ['.body', 'string'] 
          eg. SourceUrl = ['.someclass', 'href']
         """
+        
+
         url = self.url
         SCRAW_SUCESS = False
         while not SCRAW_SUCESS:
@@ -123,7 +125,7 @@ class crawler():
             except requests.exceptions.ConnectionError:
                 print("connection Time out!")
                 time.sleep(5)
-        if r.encoding == 'ISO-8859-1':
+        if r.encoding.find('ISO-8859'):
             encodings = requests.utils.get_encodings_from_content(r.text)
             if encodings:
                 encoding = encodings[0]

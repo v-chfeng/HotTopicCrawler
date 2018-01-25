@@ -19,6 +19,13 @@ import HotTopicCrawler
 #         url = columns_list[1]
 #         hotindex = columns_list[2]
 #         frequency = 'daily'
+def _crawl_body(body_url):
+    body_css = ['.comment_txt','string']
+    body_output = '.\\data\\body_weiboreal.tsv'
+    body_crawl = HotTopicCrawler.crawler(body_url,body_output)
+    (body_results_list,body_results_dic) = body_crawl.custom_run(body=body_css)
+    use_body = body_results_dic[0][0].replace('\t','').replace('\n','')
+    return use_body
 
 
 def _crawl_article(article_url):
@@ -142,6 +149,16 @@ if __name__ == '__main__':
             url_str = split_items[1]
             hotindex_str = split_items[2]            
             urls = bangdan_crawler.url_pathcombine(url_str)
+            try:
+                if urls:
+                    tools = ".\\Tools\\Microsoft.Label.VCUploadTools.exe"
+                    use_string = " " + "-u" + " " + urls
+                    cmd = tools + use_string
+                    r = os.popen(cmd)
+                    use_url = r.read().replace('\n', '')
+                    body_str = _crawl_body(use_url)
+            except:
+                print('crawl article failed.')
             newline_list = []
             newline_list.append(todaytimestamp)
             newline_list.append(websource)
