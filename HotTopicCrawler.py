@@ -30,7 +30,13 @@ class crawler():
          eg. Body = ['.body', 'string'] 
          eg. SourceUrl = ['.someclass', 'href']
         """
-        url = self.url
+        tools = "..\\UploadCosmos\\Microsoft.Label.VCUploadTools.exe"
+        use_string = " " + "-u" + " " + self.url
+        cmd = tools + use_string
+        r = os.popen(cmd)
+        use_url = r.read().replace('\n', '')
+
+        url = use_url
         SCRAW_SUCESS = False
         while not SCRAW_SUCESS:
             try:
@@ -106,9 +112,14 @@ class crawler():
          eg. Body = ['.body', 'string'] 
          eg. SourceUrl = ['.someclass', 'href']
         """
-        
+        tools = "..\\UploadCosmos\\Microsoft.Label.VCUploadTools.exe"
+        use_string = " " + "-u" + " " + self.url
+        cmd = tools + use_string
+        r = os.popen(cmd)
+        use_url = r.read().replace('\n', '')
 
-        url = self.url
+
+        url = use_url
         SCRAW_SUCESS = False
         while not SCRAW_SUCESS:
             try:
@@ -125,7 +136,7 @@ class crawler():
             except requests.exceptions.ConnectionError:
                 print("connection Time out!")
                 time.sleep(5)
-        if r.encoding.find('ISO-8859'):
+        if r.encoding.find('ISO-8859') :
             encodings = requests.utils.get_encodings_from_content(r.text)
             if encodings:
                 encoding = encodings[0]

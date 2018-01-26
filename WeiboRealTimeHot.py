@@ -27,7 +27,6 @@ def _crawl_body(body_url):
     use_body = body_results_dic[0][0].replace('\t','').replace('\n','')
     return use_body
 
-
 def _crawl_article(article_url):
     print('scraw', ' ', article_url)
     # 有卡片(图片)的百度页面
@@ -151,14 +150,10 @@ if __name__ == '__main__':
             urls = bangdan_crawler.url_pathcombine(url_str)
             try:
                 if urls:
-                    tools = ".\\Tools\\Microsoft.Label.VCUploadTools.exe"
-                    use_string = " " + "-u" + " " + urls
-                    cmd = tools + use_string
-                    r = os.popen(cmd)
-                    use_url = r.read().replace('\n', '')
-                    body_str = _crawl_body(use_url)
+                    body_str = _crawl_body(urls)
             except:
-                print('crawl article failed.')
+                print('crawl body failed.')
+                body_str = ''
             newline_list = []
             newline_list.append(todaytimestamp)
             newline_list.append(websource)
